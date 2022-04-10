@@ -1,3 +1,4 @@
+
 //fonction permet de visualiser le mot de passe
 function showPassword() {
   var x = document.getElementById("password");
@@ -15,6 +16,41 @@ function showPasswordRegister() {
     x.type = "password";
   }
 }
+$(document).ready(function () {
+  
+  $("#btnRegister").click(function () {
+    registerNewAccount()
+  })
+  $("#btnLogin").click(function () {
+    loginToAccount()
+})
+})
+const loginToAccount = () => {
+  var password =$("#password").val();
+  var email = $("#email").val();
+  if (password.length > 0 && email.length > 0) {
+    let user = {
+      email: email,
+      pass: hashPassword(password),
+    };
+    let accounts = [];
+    accounts = getAccountsList();
+    if (checkUserAccount(accounts, user)) {
+      // commpte trouver
+      alert("You logged Successefuly " + user.email);
+    } else {
+      alert(
+        "password or email " +
+          user.email +
+          " is incorrect ! please sign up first"
+      );
+      $("#exampleModal").modal("show");
+    }
+    $("#password").html(" ")
+
+    $("#email").html(" ") 
+  }
+};
 //fonction de hashage du password
 const hashPassword = (pass) => {
   return md5(pass);
@@ -25,8 +61,8 @@ const checkUserAccountSignUp = (accounts, user) => {
   else false;
 };
 const registerNewAccount = () => {
-  let password = document.getElementById("passregister").value;
-  let email = document.getElementById("emailregister").value;
+  let password = $("#passregister").val();
+  let email = $("#emailregister").val();
   if (password.length > 0 && email.length > 0) {
     let user = {
       email: email,
@@ -46,9 +82,9 @@ const registerNewAccount = () => {
       $("#exampleModal").modal("hide");
     }
   }
-  document.getElementById("passregister").innerHTML = "";
+  $("#passregister").html(" ")
 
-  document.getElementById("emailregister").innerHTML = "";
+  $("#emailregister").html(" ")
 
   console.log(accounts);
 };
@@ -64,32 +100,7 @@ const checkUserAccount = (accounts, user) => {
   else false;
 };
 // fonction de login permet a utilisateur d'acceder a son compte via password et email
-const loginToAccount = () => {
-  let password = document.getElementById("password").value;
-  let email = document.getElementById("email").value;
-  if (password.length > 0 && email.length > 0) {
-    let user = {
-      email: email,
-      pass: hashPassword(password),
-    };
-    let accounts = [];
-    accounts = getAccountsList();
-    if (checkUserAccount(accounts, user)) {
-      // commpte trouver
-      alert("You logged Successefuly " + user.email);
-    } else {
-      alert(
-        "password or email " +
-          user.email +
-          " is incorrect ! please sign up first"
-      );
-      $("#exampleModal").modal("show");
-    }
-    document.getElementById("password").innerHTML = "";
 
-    document.getElementById("email").innerHTML = "";
-  }
-};
 const getUserAccount = () => {};
 //fonction de mise a jour de la liste des compte stocker localement
 const updateAccountList = (accounts) => {
